@@ -134,9 +134,48 @@
             transform: translateY(0);
         }
 
-        /* Ẩn các textarea chứa dữ liệu */
+        /* Watermark (Dấu ấn riêng) - Vị trí hiện tại */
+        #watermark {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.4);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Ẩn các div chứa dữ liệu */
         .hidden-data {
             display: none;
+        }
+
+        /* ========================================
+        TỐI ƯU HÓA CHO ĐIỆN THOẠ (RESPONSIVE)
+        ========================================
+        */
+        @media (max-width: 500px) {
+            .glass-container {
+                padding: 30px 20px; /* Giảm padding tổng thể */
+                margin: 20px; /* Thêm margin để không chạm vào rìa màn hình */
+                width: 95%; /* Tăng độ rộng để tận dụng không gian */
+            }
+
+            h1 {
+                font-size: 1.8em; /* Giảm kích thước tiêu đề chính */
+            }
+
+            p.subtitle {
+                font-size: 1em; /* Giảm kích thước phụ đề */
+                margin-bottom: 20px;
+            }
+
+            .copy-button {
+                padding: 15px 15px; /* Tăng padding dọc cho nút dễ chạm hơn */
+                font-size: 1em; /* Giảm kích thước chữ nút */
+            }
         }
     </style>
 </head>
@@ -175,11 +214,11 @@
     // Hàm hiển thị thông báo "Đã sao chép thành công!"
     function showSuccessMessage() {
         messageElement.textContent = 'Đã sao chép thành công!';
-        messageElement.classList.add('show'); // Thêm class 'show' để hiện thị
+        messageElement.classList.add('show'); 
 
         // Xóa thông báo sau 3 giây
         setTimeout(() => {
-            messageElement.classList.remove('show'); // Xóa class 'show' để ẩn
+            messageElement.classList.remove('show'); 
             messageElement.textContent = '';
         }, 3000);
     }
@@ -198,10 +237,6 @@
                     setTimeout(() => messageElement.classList.remove('show'), 3000);
                 });
         } else {
-            // Phương pháp dự phòng cho trình duyệt cũ hơn (chỉ dùng cho input/textarea)
-            // Vì chúng ta dùng <div>, phương pháp này sẽ không hoạt động nếu Clipboard API bị chặn hoàn toàn.
-            // Để đơn giản, chúng ta sẽ bỏ qua phương pháp dự phòng này khi dùng <div>
-            // và giả định môi trường hiện đại hỗ trợ Clipboard API.
             messageElement.textContent = 'Lỗi: Trình duyệt của bạn không hỗ trợ sao chép tự động.';
             messageElement.classList.add('show');
             console.error('Lỗi: Clipboard API không khả dụng và không có dự phòng cho DIV.');
